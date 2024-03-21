@@ -19,4 +19,5 @@ return {
   {
     'Mohammed-Taher/AdvancedNewFile.nvim',
   },
+  { 'CRAG666/code_runner.nvim', config = true },
 }
