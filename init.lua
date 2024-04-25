@@ -172,6 +172,7 @@ vim.keymap.set('n', '<leader>q', '<cmd>q<CR>', { desc = 'close window current wi
 vim.keymap.set('n', '<C-n>', '<cmd>AdvancedNewFile<CR>', { desc = 'create files and folders using advance new file plugin', noremap = true })
 vim.keymap.set('n', '|', '<cmd>vsplit<CR>', { desc = 'open a new vertical split with the current buffer' })
 vim.keymap.set('n', '°', '<cmd>split<CR>', { desc = 'open a new vertical split with the current buffer' })
+vim.keymap.set('n', '<leader>x', '<cmd>bd<CR>', { desc = 'delete the current buffer' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
