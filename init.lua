@@ -359,27 +359,12 @@ require('lazy').setup({
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
-        --
         defaults = {
           mappings = {
             -- i = { ['<c-enter>'] = 'to_fuzzy_refine' },
             n = {
               ['q'] = require('telescope.actions').close,
             },
-          },
-        },
-        pickers = {
-          find_files = {
-            hidden = true,
-          },
-          git_files = {
-            hidden = true,
-          },
-          grep_string = {
-            hidden = true,
-          },
-          live_grep = {
-            hidden = true,
           },
         },
         extensions = {
@@ -408,13 +393,13 @@ require('lazy').setup({
 
       -- keymap to file through all the files including .gitignore ones.
       vim.keymap.set('n', '<leader>saf', function()
-        builtin.find_files { no_ignore = true }
+        builtin.find_files { no_ignore = true, hidden = true }
       end, { desc = '[S]earch [A]ll [F]iles' })
       vim.keymap.set('n', '<leader>sag', function()
-        builtin.find_files { no_ignore = true }
+        builtin.live_grep { no_ignore = true, hidden = true }
       end, { desc = '[S]earch [A]ll by [G]rep' })
       vim.keymap.set('n', '<leader>saw', function()
-        builtin.find_files { no_ignore = true }
+        builtin.grep_string { no_ignore = true, hidden = true }
       end, { desc = '[S]earch [A]ll current [W]ord' })
 
       -- Slightly advanced example of overriding default behavior and theme
