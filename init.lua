@@ -590,6 +590,14 @@ require('lazy').setup({
               },
             },
           },
+          volar = {
+            filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+            init_options = {
+              vue = {
+                hybridMode = false,
+              },
+            },
+          },
         },
         -- Ensure the servers and tools above are installed
         --  To check the current status of installed tools and/or manually install
