@@ -183,7 +183,7 @@ vim.keymap.set('n', '<leader>x', function()
     vim.api.nvim_command 'bd'
   end
 end, { desc = 'delete the current buffer' })
-
+vim.keymap.set('n', '<leader><Tab>', '<cmd>bnext<CR>', { desc = 'Next buffer' })
 vim.keymap.set('n', '<leader>t', '<cmd>terminal<CR>', { desc = 'open a new terminal buffer' })
 
 -- Diagnostic keymaps
