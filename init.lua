@@ -172,7 +172,19 @@ vim.keymap.set('n', '<leader>q', '<cmd>q<CR>', { desc = 'close window current wi
 vim.keymap.set('n', '<C-n>', '<cmd>AdvancedNewFile<CR>', { desc = 'create files and folders using advance new file plugin', noremap = true })
 vim.keymap.set('n', '|', '<cmd>vsplit<CR>', { desc = 'open a new vertical split with the current buffer' })
 vim.keymap.set('n', '°', '<cmd>split<CR>', { desc = 'open a new vertical split with the current buffer' })
-vim.keymap.set('n', '<leader>x', '<cmd>bd<CR>', { desc = 'delete the current buffer' })
+
+-- delete a buffer with 'bd' if its not a terminal buffer otherwise delete it with 'bd!'
+vim.keymap.set('n', '<leader>x', function()
+  local buff_name = vim.api.nvim_buf_get_name(0)
+  local start = 'term://'
+  if string.sub(buff_name, 1, string.len(start)) == start then
+    vim.api.nvim_command 'bd!'
+  else
+    vim.api.nvim_command 'bd'
+  end
+end, { desc = 'delete the current buffer' })
+
+vim.keymap.set('n', '<leader>t', '<cmd>terminal<CR>', { desc = 'open a new terminal buffer' })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
