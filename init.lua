@@ -184,7 +184,13 @@ vim.keymap.set('n', '<leader>x', function()
   end
 end, { desc = 'delete the current buffer' })
 vim.keymap.set('n', '<leader><Tab>', '<cmd>bnext<CR>', { desc = 'Next buffer' })
-vim.keymap.set('n', '<leader>t', '<cmd>terminal<CR>', { desc = 'open a new terminal buffer' })
+vim.keymap.set('n', '<leader>tt', '<cmd>terminal<CR>', { desc = 'open a new terminal buffer' })
+vim.keymap.set(
+  'n',
+  '<leader>te',
+  '<cmd>!alacritty --working-directory="./" --hold & disown<CR><CR>',
+  { desc = 'open a new alacritty terminal in the working directory' }
+)
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
