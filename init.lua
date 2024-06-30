@@ -166,7 +166,20 @@ vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Set neovim termguicolors
+
 vim.opt.termguicolors = true
+
+-- Register filetypes with extensions
+
+vim.filetype.add {
+  extension = {
+    jinja = 'jinja',
+    jinja2 = 'jinja',
+    j2 = 'jinja',
+    blade = 'blade',
+  },
+}
+
 -- Personal keymaps
 
 vim.keymap.set('n', '<c-s>', '<cmd>w<CR>', { desc = 'Save buffer' })
@@ -350,9 +363,20 @@ require('lazy').setup({
         end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
-
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      {
+        'nvim-tree/nvim-web-devicons',
+        enabled = vim.g.have_nerd_font,
+        opts = {
+          override_by_extension = {
+            ['jinja'] = {
+              icon = '',
+              color = '#81e043',
+              name = 'jinja',
+            },
+          },
+        },
+      },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -618,6 +642,30 @@ require('lazy').setup({
               },
             },
           },
+          htmx = {
+            filetypes = { 'jinja' },
+          },
+          html = {
+            filetypes = { 'html', 'jinja', 'blade' },
+          },
+          emmet_ls = {
+            filetypes = {
+              'astro',
+              'css',
+              'eruby',
+              'html',
+              'htmldjango',
+              'javascriptreact',
+              'less',
+              'pug',
+              'sass',
+              'scss',
+              'svelte',
+              'typescriptreact',
+              'vue',
+              'jinja',
+            },
+          },
         },
         -- Ensure the servers and tools above are installed
         --  To check the current status of installed tools and/or manually install
@@ -842,6 +890,9 @@ require('lazy').setup({
 
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup(opts)
+
+      -- Register parsers for particular filetypes
+      vim.treesitter.language.register('vue', 'jinja')
 
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
