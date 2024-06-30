@@ -165,6 +165,8 @@ vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+-- Set neovim termguicolors
+vim.opt.termguicolors = true
 -- Personal keymaps
 
 vim.keymap.set('n', '<c-s>', '<cmd>w<CR>', { desc = 'Save buffer' })
@@ -770,6 +772,10 @@ require('lazy').setup({
     name = 'catppuccin',
     priority = 1000, -- make sure to load this before all the other start plugins
     init = function()
+      -- setup function
+      require('catppuccin').setup {
+        transparent_background = true,
+      }
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
@@ -777,6 +783,7 @@ require('lazy').setup({
       -- You can configure highlights by doing something like
       vim.cmd.hi 'Comment gui=none'
     end,
+    setup = { transparent_background = true },
   },
 
   -- Highlight todo, notes, etc in comments
@@ -854,7 +861,7 @@ require('lazy').setup({
   --  Here are some example plugins that I've included in the kickstart repository.
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
-  -- require 'kickstart.plugins.debug',
+  require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`

@@ -20,10 +20,9 @@ return {
     'Mohammed-Taher/AdvancedNewFile.nvim',
   },
   {
-    'nvim-focus/focus.nvim',
-    version = '*',
+    'norcalli/nvim-colorizer.lua',
     init = function()
-      require('focus').setup()
+      require('colorizer').setup()
     end,
   },
   { 'CRAG666/code_runner.nvim', config = true, opts = { filetype = { php = { 'php' } }, { go = { 'go run' } } } },
