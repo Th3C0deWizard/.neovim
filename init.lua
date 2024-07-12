@@ -206,6 +206,12 @@ vim.keymap.set(
   '<cmd>!alacritty --working-directory="./" --hold & disown<CR><CR>',
   { desc = 'open a new alacritty terminal in the working directory' }
 )
+vim.keymap.set(
+  'n',
+  '<leader>tl',
+  '<cmd>!alacritty --working-directory="./" -e "lazygit" & disown<CR><CR>',
+  { desc = 'open a new alacritty terminal in the working directory with lazygit' }
+)
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -373,6 +379,11 @@ require('lazy').setup({
               icon = '',
               color = '#81e043',
               name = 'jinja',
+            },
+            ['blade.php'] = {
+              icon = '',
+              color = '#a074c4',
+              name = 'blade',
             },
           },
         },
@@ -664,8 +675,10 @@ require('lazy').setup({
               'typescriptreact',
               'vue',
               'jinja',
+              'blade',
             },
           },
+          tailwindcss = { filetypes = { 'html', 'jinja' } },
         },
         -- Ensure the servers and tools above are installed
         --  To check the current status of installed tools and/or manually install
@@ -820,20 +833,51 @@ require('lazy').setup({
     name = 'catppuccin',
     priority = 1000, -- make sure to load this before all the other start plugins
     init = function()
-      -- setup function
-      require('catppuccin').setup {
-        transparent_background = true,
-      }
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
       vim.cmd.colorscheme 'catppuccin'
-      -- You can configure highlights by doing something like
       vim.cmd.hi 'Comment gui=none'
     end,
-    setup = { transparent_background = true },
   },
-
+  {
+    'folke/tokyonight.nvim',
+    lazy = false,
+    priority = 1000,
+    init = function()
+      -- vim.cmd.colorscheme 'tokyonight-night'
+      -- vim.cmd.hi 'Comment gui=none'
+    end,
+  },
+  {
+    'rebelot/kanagawa.nvim',
+    lazy = false,
+    priority = 1000,
+    init = function()
+      -- vim.cmd.colorscheme 'kanagawa'
+      -- vim.cmd.hi 'Comment gui=none'
+    end,
+  },
+  { 'ellisonleao/gruvbox.nvim', priority = 1000, config = true, opts = {} },
+  {
+    'luisiacc/gruvbox-baby',
+    lazy = false,
+    priority = 1000,
+    init = function()
+      -- vim.cmd.colorscheme 'gruvbox-baby'
+      -- vim.cmd.hi 'Comment gui=none'
+    end,
+  },
+  {
+    'xiyaowong/transparent.nvim',
+    lazy = false,
+    priority = 1000,
+    init = function()
+      require('transparent').setup {
+        exclude_groups = {
+          'CursorLine',
+        },
+      }
+      require('transparent').toggle(true)
+    end,
+  },
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -893,6 +937,7 @@ require('lazy').setup({
 
       -- Register parsers for particular filetypes
       vim.treesitter.language.register('vue', 'jinja')
+      vim.treesitter.language.register('vue', 'blade')
 
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
