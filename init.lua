@@ -678,7 +678,7 @@ require('lazy').setup({
               'blade',
             },
           },
-          tailwindcss = { filetypes = { 'html', 'jinja' } },
+          tailwindcss = { filetypes = { 'html', 'jinja' }, includeLanguages = { 'jinja', 'html' } },
         },
         -- Ensure the servers and tools above are installed
         --  To check the current status of installed tools and/or manually install
@@ -719,6 +719,13 @@ require('lazy').setup({
         timeout_ms = 500,
         lsp_fallback = true,
       },
+      formatters = {
+        djlint = {
+          args = function()
+            return { '--reformat', '-' }
+          end,
+        },
+      },
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
@@ -728,6 +735,7 @@ require('lazy').setup({
         -- is found.
         -- javascript = { { "prettierd", "prettier" } },
         json = { 'prettier' },
+        jinja = { 'djlint' },
       },
     },
   },
@@ -936,8 +944,8 @@ require('lazy').setup({
       require('nvim-treesitter.configs').setup(opts)
 
       -- Register parsers for particular filetypes
-      vim.treesitter.language.register('vue', 'jinja')
-      vim.treesitter.language.register('vue', 'blade')
+      vim.treesitter.language.register('htmldjango', 'jinja')
+      vim.treesitter.language.register('htmldjango', 'blade')
 
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
