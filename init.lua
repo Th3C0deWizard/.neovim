@@ -125,6 +125,9 @@ vim.bo.softtabstop = 2
 -- Save undo history
 vim.opt.undofile = true
 
+-- confirm quit when unsaving files
+vim.opt.confirm = true
+
 -- Case-insensitive searching UNLESS \C or capital in search
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
@@ -200,6 +203,7 @@ vim.keymap.set('n', '<leader>x', function()
 end, { desc = 'delete the current buffer' })
 vim.keymap.set('n', '<leader><Tab>', '<cmd>bnext<CR>', { desc = 'Next buffer' })
 vim.keymap.set('n', '<leader>tt', '<cmd>terminal<CR>', { desc = 'open a new terminal buffer' })
+vim.keymap.set('n', '<leader>to', '<cmd>Oil<CR>', { desc = 'open a new buffer with oil' })
 vim.keymap.set(
   'n',
   '<leader>te',
@@ -646,7 +650,7 @@ require('lazy').setup({
             },
           },
           volar = {
-            filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+            filetypes = { 'vue' },
             init_options = {
               vue = {
                 hybridMode = false,
@@ -657,7 +661,7 @@ require('lazy').setup({
             filetypes = { 'jinja' },
           },
           html = {
-            filetypes = { 'html', 'jinja', 'blade' },
+            filetypes = { 'html', 'jinja', 'blade', 'templ' },
           },
           emmet_ls = {
             filetypes = {
@@ -676,9 +680,11 @@ require('lazy').setup({
               'vue',
               'jinja',
               'blade',
+              'templ',
             },
           },
           tailwindcss = { filetypes = { 'html', 'jinja' }, includeLanguages = { 'jinja', 'html' } },
+          grammarly = { filetypes = { 'jinja' } },
         },
         -- Ensure the servers and tools above are installed
         --  To check the current status of installed tools and/or manually install
@@ -693,12 +699,16 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format lua code
+        'ts_ls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
+            if server_name == 'tailwindcss' then
+              return
+            end
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
@@ -708,6 +718,10 @@ require('lazy').setup({
           end,
         },
       }
+      -- local server = servers['tsserver'] or {}
+      -- server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+      -- local lspconfig = require 'lspconfig'
+      -- lspconfig['ts_ls'].setup { server }
     end,
   },
 
@@ -733,8 +747,11 @@ require('lazy').setup({
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
-        -- javascript = { { "prettierd", "prettier" } },
+        javascript = { 'prettier' },
+        typescript = { 'prettier' },
+        typescriptreact = { 'prettier' },
         json = { 'prettier' },
+        vue = { 'prettier' },
         jinja = { 'djlint' },
       },
     },
@@ -769,13 +786,15 @@ require('lazy').setup({
       --    you can use this plugin to help you. It even has snippets
       --    for various frameworks/libraries/etc. but you will have to
       --    set up the ones that are useful for you.
-      -- 'rafamadriz/friendly-snippets',
+      'rafamadriz/friendly-snippets',
     },
     config = function()
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
+      -- load snippets from path/of/your/nvim/config/my-cool-snippets
+      require('luasnip.loaders.from_vscode').lazy_load()
 
       cmp.setup {
         snippet = {

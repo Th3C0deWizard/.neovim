@@ -17,9 +17,6 @@ return {
     -- this is equalent to setup({}) function
   },
   {
-    'Mohammed-Taher/AdvancedNewFile.nvim',
-  },
-  {
     'norcalli/nvim-colorizer.lua',
     init = function()
       require('colorizer').setup()
@@ -43,5 +40,51 @@ return {
       modes = { 'n', 'i' },
       hybrid_modes = { 'n', 'i' },
     },
+  },
+  {
+    'mfussenegger/nvim-lint',
+    init = function()
+      require('lint').linters_by_ft = {
+        jinja = { 'djlint' },
+      }
+      vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+        callback = function()
+          -- try_lint without arguments runs the linters defined in `linters_by_ft`
+          -- for the current filetype
+          require('lint').try_lint()
+
+          -- You can call `try_lint` with a linter name or a list of names to always
+          -- run specific linters, independent of the `linters_by_ft` configuration
+          -- require('lint').try_lint 'cspell'
+        end,
+      })
+    end,
+  },
+  {
+    'stevearc/oil.nvim',
+    ---@module 'oil'
+    ---@type oil.SetupOpts
+    opts = {
+      buf_options = {
+        buflisted = true,
+      },
+      view_options = {
+        show_hidden = true,
+      },
+    },
+    -- Optional dependencies
+    -- dependencies = { { 'echasnovski/mini.icons', opts = {} } },
+    dependencies = { 'nvim-tree/nvim-web-devicons' }, -- use if prefer nvim-web-devicons
+  },
+  {
+    'luckasRanarison/tailwind-tools.nvim',
+    name = 'tailwind-tools',
+    build = ':UpdateRemotePlugins',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-telescope/telescope.nvim', -- optional
+      'neovim/nvim-lspconfig', -- optional
+    },
+    opts = {}, -- your configuration
   },
 }
