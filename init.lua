@@ -730,7 +730,7 @@ require('lazy').setup({
     opts = {
       notify_on_error = false,
       format_on_save = {
-        timeout_ms = 500,
+        timeout_ms = 1000,
         lsp_fallback = true,
       },
       formatters = {
@@ -747,11 +747,11 @@ require('lazy').setup({
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
-        javascript = { 'prettier' },
-        typescript = { 'prettier' },
-        typescriptreact = { 'prettier' },
-        json = { 'prettier' },
-        vue = { 'prettier' },
+        javascript = { 'biome', 'prettierd' },
+        typescript = { 'biome', 'prettierd' },
+        typescriptreact = { 'biome', 'prettierd' },
+        json = { 'biome', 'prettierd' },
+        vue = { 'biome', 'prettierd' },
         jinja = { 'djlint' },
       },
     },
@@ -851,60 +851,72 @@ require('lazy').setup({
     end,
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`
-    'catppuccin/nvim',
-    name = 'catppuccin',
-    priority = 1000, -- make sure to load this before all the other start plugins
-    init = function()
-      vim.cmd.colorscheme 'catppuccin'
-      vim.cmd.hi 'Comment gui=none'
-    end,
-  },
-  {
-    'folke/tokyonight.nvim',
-    lazy = false,
-    priority = 1000,
-    init = function()
-      -- vim.cmd.colorscheme 'tokyonight-night'
-      -- vim.cmd.hi 'Comment gui=none'
-    end,
-  },
+  -- You can easily change to a different colorscheme.
+  -- Change the name of the colorscheme plugin below, and then
+  -- change the command in the config to whatever the name of that colorscheme is
+  --
+  -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`
+  --   {
+  --  'catppuccin/nvim',
+  --   name = 'catppuccin',
+  --   priority = 1000, -- make sure to load this before all the other start plugins
+  --   init = function()
+  --     vim.cmd.colorscheme 'catppuccin'
+  --     vim.cmd.hi 'Comment gui=none'
+  --   end,
+  -- },
+  -- {
+  --   'folke/tokyonight.nvim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   init = function()
+  --     -- vim.cmd.colorscheme 'tokyonight-night'
+  --     -- vim.cmd.hi 'Comment gui=none'
+  --   end,
+  -- },
   {
     'rebelot/kanagawa.nvim',
     lazy = false,
     priority = 1000,
     init = function()
-      -- vim.cmd.colorscheme 'kanagawa'
-      -- vim.cmd.hi 'Comment gui=none'
+      vim.cmd.colorscheme 'kanagawa-wave'
+      vim.cmd.hi 'Comment gui=none'
     end,
-  },
-  { 'ellisonleao/gruvbox.nvim', priority = 1000, config = true, opts = {} },
-  {
-    'luisiacc/gruvbox-baby',
-    lazy = false,
-    priority = 1000,
-    init = function()
-      -- vim.cmd.colorscheme 'gruvbox-baby'
-      -- vim.cmd.hi 'Comment gui=none'
-    end,
-  },
-  {
-    'xiyaowong/transparent.nvim',
-    lazy = false,
-    priority = 1000,
-    init = function()
-      require('transparent').setup {
-        exclude_groups = {
-          'CursorLine',
+    opts = {
+      colors = {
+        theme = {
+          all = {
+            ui = {
+              bg_gutter = 'none',
+            },
+          },
         },
-      }
-      require('transparent').toggle(true)
-    end,
+      },
+    },
   },
+  -- { 'ellisonleao/gruvbox.nvim', priority = 1000, config = true, opts = {} },
+  -- {
+  --   'luisiacc/gruvbox-baby',
+  --   lazy = false,
+  --   priority = 1000,
+  --   init = function()
+  --     -- vim.cmd.colorscheme 'gruvbox-baby'
+  --     -- vim.cmd.hi 'Comment gui=none'
+  --   end,
+  -- },
+  -- {
+  --   'xiyaowong/transparent.nvim',
+  --   lazy = false,
+  --   priority = 1000,
+  --   init = function()
+  --     require('transparent').setup {
+  --       exclude_groups = {
+  --         'CursorLine',
+  --       },
+  --     }
+  --     require('transparent').toggle(true)
+  --   end,
+  -- },
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -985,7 +997,7 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   require 'kickstart.plugins.debug',
-  require 'kickstart.plugins.indent_line',
+  -- require 'kickstart.plugins.indent_line',
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
