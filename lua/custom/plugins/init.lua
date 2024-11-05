@@ -87,4 +87,19 @@ return {
     },
     opts = {}, -- your configuration
   },
+  {
+    'mfussenegger/nvim-lint',
+    name = 'nvim-lint',
+    config = function()
+      require('lint').linters_by_ft = {
+        typescript = { 'oxlint' },
+      }
+    end,
+  },
+  -- {
+  --   'supermaven-inc/supermaven-nvim',
+  --   config = function()
+  --     require('supermaven-nvim').setup {}
+  --   end,
+  -- },
 }
