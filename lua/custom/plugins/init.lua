@@ -96,10 +96,41 @@ return {
       }
     end,
   },
-  -- {
-  --   'supermaven-inc/supermaven-nvim',
-  --   config = function()
-  --     require('supermaven-nvim').setup {}
-  --   end,
-  -- },
+  {
+    'github/copilot.vim',
+    init = function()
+      vim.keymap.set('i', '<C-{>', 'copilot#Accept("\\<CR>")', {
+        expr = true,
+        replace_keycodes = false,
+      })
+      vim.g.copilot_no_tab_map = true
+    end,
+  },
+  {
+    'olimorris/codecompanion.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'hrsh7th/nvim-cmp', -- Optional: For using slash commands and variables in the chat buffer
+      'nvim-telescope/telescope.nvim', -- Optional: For using slash commands
+      { 'stevearc/dressing.nvim', opts = {} }, -- Optional: Improves `vim.ui.select`
+    },
+    config = true,
+  },
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    init = function()
+      require('lualine').setup {}
+    end,
+  },
+  {
+    'nvim-treesitter/nvim-treesitter-context',
+    init = function()
+      require('treesitter-context').setup {
+        max_lines = 4,
+        multiline_threshold = 2,
+      }
+    end,
+  },
 }

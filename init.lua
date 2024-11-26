@@ -87,6 +87,7 @@ P.S. You can delete this when you're done too. It's your config now! :)
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -685,6 +686,12 @@ require('lazy').setup({
           },
           tailwindcss = { filetypes = { 'html', 'jinja' }, includeLanguages = { 'jinja', 'html' } },
           grammarly = { filetypes = { 'jinja' } },
+          clangd = {
+            cmd = {
+              'clangd',
+              '--offset-encoding=utf-16',
+            },
+          },
         },
         -- Ensure the servers and tools above are installed
         --  To check the current status of installed tools and/or manually install
@@ -750,6 +757,7 @@ require('lazy').setup({
         javascript = { 'prettierd' },
         typescript = { 'prettierd' },
         typescriptreact = { 'prettierd' },
+        javascriptreact = { 'prettierd' },
         json = { 'prettierd' },
         vue = { 'prettierd' },
         jinja = { 'djlint' },
@@ -895,27 +903,32 @@ require('lazy').setup({
       },
     },
   },
-  -- { 'ellisonleao/gruvbox.nvim', priority = 1000, config = true, opts = {} },
   -- {
-  --   'luisiacc/gruvbox-baby',
-  --   lazy = false,
-  --   priority = 1000,
+  --   'rose-pine/neovim',
+  --   name = 'rose-pine',
   --   init = function()
-  --     -- vim.cmd.colorscheme 'gruvbox-baby'
-  --     -- vim.cmd.hi 'Comment gui=none'
+  --     vim.cmd.colorscheme 'rose-pine'
   --   end,
   -- },
   -- {
-  --   'xiyaowong/transparent.nvim',
+  --   'navarasu/onedark.nvim',
   --   lazy = false,
   --   priority = 1000,
   --   init = function()
-  --     require('transparent').setup {
-  --       exclude_groups = {
-  --         'CursorLine',
-  --       },
+  --     require('onedark').setup {
+  --       style = 'warmer',
   --     }
-  --     require('transparent').toggle(true)
+  --     require('onedark').load()
+  --     vim.cmd.colorscheme 'onedark'
+  --   end,
+  -- },
+  -- {
+  --   'sainnhe/sonokai',
+  --   lazy = false,
+  --   priority = 1000,
+  --   init = function()
+  --     vim.g.sonokai_style = 'shusia'
+  --     vim.cmd.colorscheme 'sonokai'
   --   end,
   -- },
   -- Highlight todo, notes, etc in comments
@@ -942,17 +955,17 @@ require('lazy').setup({
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
-      local statusline = require 'mini.statusline'
+      -- local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font }
+      -- statusline.setup { use_icons = vim.g.have_nerd_font }
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
       -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
+      -- statusline.section_location = function()
+      -- return '%2l:%-2v'
+      -- end
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
