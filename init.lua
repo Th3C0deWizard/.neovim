@@ -750,7 +750,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'black', 'isort' },
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
@@ -865,15 +865,15 @@ require('lazy').setup({
   -- change the command in the config to whatever the name of that colorscheme is
   --
   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`
-  --   {
-  --  'catppuccin/nvim',
-  --   name = 'catppuccin',
-  --   priority = 1000, -- make sure to load this before all the other start plugins
-  --   init = function()
-  --     vim.cmd.colorscheme 'catppuccin'
-  --     vim.cmd.hi 'Comment gui=none'
-  --   end,
-  -- },
+  {
+    'catppuccin/nvim',
+    name = 'catppuccin',
+    priority = 1000, -- make sure to load this before all the other start plugins
+    init = function()
+      -- vim.cmd.colorscheme 'catppuccin'
+      -- vim.cmd.hi 'Comment gui=none'
+    end,
+  },
   -- {
   --   'folke/tokyonight.nvim',
   --   lazy = false,
@@ -886,6 +886,7 @@ require('lazy').setup({
   {
     'rebelot/kanagawa.nvim',
     lazy = false,
+    disable = true,
     priority = 1000,
     init = function()
       vim.cmd.colorscheme 'kanagawa-wave'
@@ -903,13 +904,13 @@ require('lazy').setup({
       },
     },
   },
-  -- {
-  --   'rose-pine/neovim',
-  --   name = 'rose-pine',
-  --   init = function()
-  --     vim.cmd.colorscheme 'rose-pine'
-  --   end,
-  -- },
+  {
+    'rose-pine/neovim',
+    name = 'rose-pine',
+    init = function()
+      -- vim.cmd.colorscheme 'rose-pine'
+    end,
+  },
   -- {
   --   'navarasu/onedark.nvim',
   --   lazy = false,
@@ -922,15 +923,15 @@ require('lazy').setup({
   --     vim.cmd.colorscheme 'onedark'
   --   end,
   -- },
-  -- {
-  --   'sainnhe/sonokai',
-  --   lazy = false,
-  --   priority = 1000,
-  --   init = function()
-  --     vim.g.sonokai_style = 'shusia'
-  --     vim.cmd.colorscheme 'sonokai'
-  --   end,
-  -- },
+  {
+    'sainnhe/sonokai',
+    lazy = false,
+    priority = 1000,
+    init = function()
+      -- vim.g.sonokai_style = 'shusia'
+      -- vim.cmd.colorscheme 'sonokai'
+    end,
+  },
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -991,6 +992,11 @@ require('lazy').setup({
       -- Register parsers for particular filetypes
       vim.treesitter.language.register('htmldjango', 'jinja')
       vim.treesitter.language.register('htmldjango', 'blade')
+
+      -- TreeSitter highlight specific configurations:
+      vim.cmd 'hi @function.method.php guifg=#D27E99'
+      vim.cmd 'hi @constructor.php guifg=#FFA066'
+      vim.cmd 'hi @keyword.function.php guifg=#76946A'
 
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
