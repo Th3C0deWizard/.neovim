@@ -762,6 +762,7 @@ require('lazy').setup({
         vue = { 'prettierd' },
         jinja = { 'djlint' },
         templ = { 'templ' },
+        -- ruby = { 'rubocop' },
       },
     },
   },

@@ -46,6 +46,7 @@ return {
     init = function()
       require('lint').linters_by_ft = {
         jinja = { 'djlint' },
+        ruby = { 'rubocop' },
       }
       vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
         callback = function()
@@ -106,17 +107,17 @@ return {
       vim.g.copilot_no_tab_map = true
     end,
   },
-  {
-    'olimorris/codecompanion.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-      'hrsh7th/nvim-cmp', -- Optional: For using slash commands and variables in the chat buffer
-      'nvim-telescope/telescope.nvim', -- Optional: For using slash commands
-      { 'stevearc/dressing.nvim', opts = {} }, -- Optional: Improves `vim.ui.select`
-    },
-    config = true,
-  },
+  -- {
+  --   'olimorris/codecompanion.nvim',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim',
+  --     'nvim-treesitter/nvim-treesitter',
+  --     'hrsh7th/nvim-cmp', -- Optional: For using slash commands and variables in the chat buffer
+  --     'nvim-telescope/telescope.nvim', -- Optional: For using slash commands
+  --     { 'stevearc/dressing.nvim', opts = {} }, -- Optional: Improves `vim.ui.select`
+  --   },
+  --   config = true,
+  -- },
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
@@ -138,9 +139,11 @@ return {
     event = 'VimEnter',
     config = function()
       require('dashboard').setup {
-        theme = 'hyper',
+        theme = 'doom',
         config = {
           header = {
+            [[                                                                              ]],
+            [[                                                                              ]],
             [[                                    ██████                                    ]],
             [[                                ████▒▒▒▒▒▒████                                ]],
             [[                              ██▒▒▒▒▒▒▒▒▒▒▒▒▒▒██                              ]],
@@ -156,6 +159,7 @@ return {
             [[                        ██▒▒██▒▒▒▒▒▒██▒▒▒▒▒▒▒▒██▒▒▒▒██                        ]],
             [[                        ████  ██▒▒██  ██▒▒▒▒██  ██▒▒██                        ]],
             [[                        ██      ██      ████      ████                        ]],
+            [[                                                                              ]],
           },
           -- Get the current working directory
           footer = { 'current working directory: ', vim.fn.getcwd() },
