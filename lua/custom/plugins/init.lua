@@ -37,8 +37,10 @@ return {
       'nvim-tree/nvim-web-devicons',
     },
     opts = {
-      modes = { 'n', 'i' },
-      hybrid_modes = { 'n', 'i' },
+      preview = {
+        modes = { 'n', 'i' },
+        hybrid_modes = { 'n', 'i' },
+      },
     },
   },
   {
@@ -47,6 +49,7 @@ return {
       require('lint').linters_by_ft = {
         jinja = { 'djlint' },
         ruby = { 'rubocop' },
+        typescript = { 'biomejs' },
       }
       vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
         callback = function()
@@ -77,36 +80,27 @@ return {
     -- dependencies = { { 'echasnovski/mini.icons', opts = {} } },
     dependencies = { 'nvim-tree/nvim-web-devicons' }, -- use if prefer nvim-web-devicons
   },
-  {
-    'luckasRanarison/tailwind-tools.nvim',
-    name = 'tailwind-tools',
-    build = ':UpdateRemotePlugins',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'nvim-telescope/telescope.nvim', -- optional
-      'neovim/nvim-lspconfig', -- optional
-    },
-    opts = {}, -- your configuration
-  },
-  {
-    'mfussenegger/nvim-lint',
-    name = 'nvim-lint',
-    config = function()
-      require('lint').linters_by_ft = {
-        typescript = { 'oxlint' },
-      }
-    end,
-  },
-  {
-    'github/copilot.vim',
-    init = function()
-      vim.keymap.set('i', '<C-{>', 'copilot#Accept("\\<CR>")', {
-        expr = true,
-        replace_keycodes = false,
-      })
-      vim.g.copilot_no_tab_map = true
-    end,
-  },
+  -- {
+  --   'luckasRanarison/tailwind-tools.nvim',
+  --   name = 'tailwind-tools',
+  --   build = ':UpdateRemotePlugins',
+  --   dependencies = {
+  --     'nvim-treesitter/nvim-treesitter',
+  --     'nvim-telescope/telescope.nvim', -- optional
+  --     'neovim/nvim-lspconfig',         -- optional
+  --   },
+  --   opts = {},                         -- your configuration
+  -- },
+  -- {
+  --   'github/copilot.vim',
+  --   init = function()
+  --     vim.keymap.set('i', '<C-{>', 'copilot#Accept("\\<CR>")', {
+  --       expr = true,
+  --       replace_keycodes = false,
+  --     })
+  --     vim.g.copilot_no_tab_map = true
+  --   end,
+  -- },
   -- {
   --   'olimorris/codecompanion.nvim',
   --   dependencies = {

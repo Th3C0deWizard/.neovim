@@ -498,10 +498,6 @@ require('lazy').setup({
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
-
-      -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
-      -- used for completion, annotations and signatures of Neovim apis
-      { 'folke/neodev.nvim', opts = {} },
     },
     config = function()
       -- Brief Aside: **What is LSP?**
@@ -650,14 +646,7 @@ require('lazy').setup({
               },
             },
           },
-          volar = {
-            filetypes = { 'vue' },
-            init_options = {
-              vue = {
-                hybridMode = false,
-              },
-            },
-          },
+
           htmx = {
             filetypes = { 'jinja' },
           },
@@ -713,15 +702,13 @@ require('lazy').setup({
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
-            if server_name == 'tailwindcss' then
-              return
-            end
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for tsserver)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
+            vim.lsp.config.setup(server_name, server)
+            vim.lsp.enable(server_name)
           end,
         },
       }
@@ -755,10 +742,10 @@ require('lazy').setup({
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         javascript = { 'prettierd' },
-        typescript = { 'prettierd' },
+        typescript = { 'biome' },
         typescriptreact = { 'prettierd' },
         javascriptreact = { 'prettierd' },
-        json = { 'prettierd' },
+        json = { 'biome' },
         vue = { 'prettierd' },
         jinja = { 'djlint' },
         templ = { 'templ' },
