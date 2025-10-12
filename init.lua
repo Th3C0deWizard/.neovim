@@ -577,7 +577,9 @@ require('lazy').setup({
 
           -- Opens a popup that displays documentation about the word under your cursor
           --  See `:help K` for why this keymap
-          map('K', vim.lsp.buf.hover, 'Hover Documentation')
+          map('K', function()
+            vim.lsp.buf.hover { border = 'rounded' }
+          end, 'Hover Documentation')
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
           --  For example, in C this would take you to the header
@@ -646,10 +648,6 @@ require('lazy').setup({
               },
             },
           },
-
-          htmx = {
-            filetypes = { 'jinja' },
-          },
           html = {
             filetypes = { 'html', 'jinja', 'blade', 'templ' },
           },
@@ -673,7 +671,6 @@ require('lazy').setup({
               'templ',
             },
           },
-          tailwindcss = { filetypes = { 'html', 'jinja' }, includeLanguages = { 'jinja', 'html' } },
           grammarly = { filetypes = { 'jinja' } },
           clangd = {
             cmd = {
@@ -695,8 +692,8 @@ require('lazy').setup({
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format lua code
-        'ts_ls',
       })
+
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
@@ -708,8 +705,12 @@ require('lazy').setup({
             -- certain features of an LSP (for example, turning off formatting for tsserver)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             vim.lsp.config.setup(server_name, server)
-            vim.lsp.enable(server_name)
           end,
+        },
+        automatic_enable = {
+          exclude = {
+            -- 'biome',
+          },
         },
       }
       -- local server = servers['tsserver'] or {}
@@ -733,6 +734,13 @@ require('lazy').setup({
             return { '--reformat', '-' }
           end,
         },
+        biomelint = {
+          command = 'node_modules/.bin/biome',
+          stdin = true,
+          args = function()
+            return { 'lint', '--stdin-file-path', '$FILENAME', '--write' }
+          end,
+        },
       },
       formatters_by_ft = {
         lua = { 'stylua' },
@@ -742,7 +750,7 @@ require('lazy').setup({
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
         javascript = { 'prettierd' },
-        typescript = { 'biome' },
+        typescript = { 'biome', 'biomelint' },
         typescriptreact = { 'prettierd' },
         javascriptreact = { 'prettierd' },
         json = { 'biome' },
