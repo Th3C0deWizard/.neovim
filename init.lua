@@ -169,6 +169,10 @@ vim.opt.scrolloff = 10
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+-- set number of items in completion menu
+
+vim.opt.pumheight = 12
+
 -- Set neovim termguicolors
 
 vim.opt.termguicolors = true
@@ -786,12 +790,14 @@ require('lazy').setup({
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      'hrsh7th/cmp-buffer',
 
       -- If you want to add a bunch of pre-configured snippets,
       --    you can use this plugin to help you. It even has snippets
       --    for various frameworks/libraries/etc. but you will have to
       --    set up the ones that are useful for you.
       'rafamadriz/friendly-snippets',
+      'onsails/lspkind.nvim',
     },
     config = function()
       -- See `:help cmp`
@@ -802,6 +808,24 @@ require('lazy').setup({
       require('luasnip.loaders.from_vscode').lazy_load()
 
       cmp.setup {
+        window = {
+          completion = {
+            winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',
+            col_offset = -3,
+            side_padding = 0,
+          },
+        },
+        formatting = {
+          fields = { 'kind', 'abbr', 'menu' },
+          format = function(entry, vim_item)
+            local kind = require('lspkind').cmp_format { mode = 'symbol_text', maxwidth = 50 }(entry, vim_item)
+            local strings = vim.split(kind.kind, '%s', { trimempty = true })
+            kind.kind = ' ' .. (strings[1] or '') .. ' '
+            kind.menu = '    (' .. (strings[2] or '') .. ')'
+
+            return kind
+          end,
+        },
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -851,6 +875,7 @@ require('lazy').setup({
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          { name = 'buffer' },
         },
       }
     end,
@@ -866,8 +891,8 @@ require('lazy').setup({
     name = 'catppuccin',
     priority = 1000, -- make sure to load this before all the other start plugins
     init = function()
-      -- vim.cmd.colorscheme 'catppuccin'
-      -- vim.cmd.hi 'Comment gui=none'
+      vim.cmd.colorscheme 'catppuccin'
+      vim.cmd.hi 'Comment gui=none'
     end,
   },
   -- {
@@ -879,27 +904,27 @@ require('lazy').setup({
   --     -- vim.cmd.hi 'Comment gui=none'
   --   end,
   -- },
-  {
-    'rebelot/kanagawa.nvim',
-    lazy = false,
-    disable = true,
-    priority = 1000,
-    init = function()
-      vim.cmd.colorscheme 'kanagawa-wave'
-      vim.cmd.hi 'Comment gui=none'
-    end,
-    opts = {
-      colors = {
-        theme = {
-          all = {
-            ui = {
-              bg_gutter = 'none',
-            },
-          },
-        },
-      },
-    },
-  },
+  -- {
+  --   'rebelot/kanagawa.nvim',
+  --   lazy = false,
+  --   disable = true,
+  --   priority = 1000,
+  --   init = function()
+  --     vim.cmd.colorscheme 'kanagawa-wave'
+  --     vim.cmd.hi 'Comment gui=none'
+  --   end,
+  --   opts = {
+  --     colors = {
+  --       theme = {
+  --         all = {
+  --           ui = {
+  --             bg_gutter = 'none',
+  --           },
+  --         },
+  --       },
+  --     },
+  --   },
+  -- },
   {
     'rose-pine/neovim',
     name = 'rose-pine',
