@@ -209,6 +209,7 @@ end, { desc = 'delete the current buffer' })
 vim.keymap.set('n', '<leader><Tab>', '<cmd>bnext<CR>', { desc = 'Next buffer' })
 vim.keymap.set('n', '<leader>tt', '<cmd>terminal<CR>', { desc = 'open a new terminal buffer' })
 vim.keymap.set('n', '<leader>to', '<cmd>Oil<CR>', { desc = 'open a new buffer with oil' })
+vim.keymap.set('n', '<leader>tc', '<cmd>terminal opencode<CR>', { desc = 'open a new terminal buffer with openCode' })
 vim.keymap.set(
   'n',
   '<leader>te',
@@ -361,7 +362,7 @@ require('lazy').setup({
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
-    branch = '0.1.x',
+    version = '*',
     dependencies = {
       'nvim-lua/plenary.nvim',
       { -- If encountering errors, see telescope-fzf-native README for install instructions
@@ -675,7 +676,6 @@ require('lazy').setup({
               'templ',
             },
           },
-          grammarly = { filetypes = { 'jinja' } },
           clangd = {
             cmd = {
               'clangd',
@@ -816,9 +816,9 @@ require('lazy').setup({
           },
         },
         formatting = {
-          fields = { 'kind', 'abbr', 'menu' },
+          fields = { 'icon', 'abbr', 'menu' },
           format = function(entry, vim_item)
-            local kind = require('lspkind').cmp_format { mode = 'symbol_text', maxwidth = 50 }(entry, vim_item)
+            local kind = require('lspkind').cmp_format { maxwidth = 50 }(entry, vim_item)
             local strings = vim.split(kind.kind, '%s', { trimempty = true })
             kind.kind = ' ' .. (strings[1] or '') .. ' '
             kind.menu = '    (' .. (strings[2] or '') .. ')'
@@ -886,15 +886,27 @@ require('lazy').setup({
   -- change the command in the config to whatever the name of that colorscheme is
   --
   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`
+  -- {
+  --   'catppuccin/nvim',
+  --   name = 'catppuccin',
+  --   priority = 1000, -- make sure to load this before all the other start plugins
+  --   init = function()
+  --     vim.cmd.colorscheme 'catppuccin'
+  --     vim.cmd.hi 'Comment gui=none'
+  --   end,
+  -- },
   {
-    'catppuccin/nvim',
-    name = 'catppuccin',
-    priority = 1000, -- make sure to load this before all the other start plugins
-    init = function()
-      vim.cmd.colorscheme 'catppuccin'
-      vim.cmd.hi 'Comment gui=none'
+    'sainnhe/gruvbox-material',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      -- Optionally configure and load the colorscheme
+      -- directly inside the plugin declaration.
+      vim.g.gruvbox_material_enable_italic = true
+      vim.cmd.colorscheme 'gruvbox-material'
     end,
   },
+
   -- {
   --   'folke/tokyonight.nvim',
   --   lazy = false,
@@ -996,6 +1008,7 @@ require('lazy').setup({
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    lazy = false,
     build = ':TSUpdate',
     opts = {
       ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
@@ -1007,8 +1020,7 @@ require('lazy').setup({
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
 
-      ---@diagnostic disable-next-line: missing-fields
-      require('nvim-treesitter.configs').setup(opts)
+      require('nvim-treesitter.config').setup(opts)
 
       -- Register parsers for particular filetypes
       vim.treesitter.language.register('htmldjango', 'jinja')
