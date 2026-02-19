@@ -717,6 +717,15 @@ require('lazy').setup({
           },
         },
       }
+
+      manual_setup_servers = {
+        'gleam',
+      }
+
+      for i, server in pairs(manual_setup_servers) do
+        vim.lsp.enable(server)
+      end
+
       -- local server = servers['tsserver'] or {}
       -- server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
       -- local lspconfig = require 'lspconfig'
@@ -895,55 +904,54 @@ require('lazy').setup({
   --     vim.cmd.hi 'Comment gui=none'
   --   end,
   -- },
-  {
-    'sainnhe/gruvbox-material',
-    lazy = false,
-    priority = 1000,
-    config = function()
-      -- Optionally configure and load the colorscheme
-      -- directly inside the plugin declaration.
-      vim.g.gruvbox_material_enable_italic = true
-      vim.cmd.colorscheme 'gruvbox-material'
-    end,
-  },
-
+  -- {
+  --   'sainnhe/gruvbox-material',
+  --   lazy = false,
+  --   priority = 1000,
+  --   config = function()
+  --     -- Optionally configure and load the colorscheme
+  --     -- directly inside the plugin declaration.
+  --     vim.g.gruvbox_material_enable_italic = true
+  --     vim.cmd.colorscheme 'gruvbox-material'
+  --   end,
+  -- },
   -- {
   --   'folke/tokyonight.nvim',
   --   lazy = false,
   --   priority = 1000,
   --   init = function()
-  --     -- vim.cmd.colorscheme 'tokyonight-night'
-  --     -- vim.cmd.hi 'Comment gui=none'
-  --   end,
-  -- },
-  -- {
-  --   'rebelot/kanagawa.nvim',
-  --   lazy = false,
-  --   disable = true,
-  --   priority = 1000,
-  --   init = function()
-  --     vim.cmd.colorscheme 'kanagawa-wave'
+  --     vim.cmd.colorscheme 'tokyonight-night'
   --     vim.cmd.hi 'Comment gui=none'
   --   end,
-  --   opts = {
-  --     colors = {
-  --       theme = {
-  --         all = {
-  --           ui = {
-  --             bg_gutter = 'none',
-  --           },
-  --         },
-  --       },
-  --     },
-  --   },
   -- },
   {
-    'rose-pine/neovim',
-    name = 'rose-pine',
+    'rebelot/kanagawa.nvim',
+    lazy = false,
+    disable = true,
+    priority = 1000,
     init = function()
-      -- vim.cmd.colorscheme 'rose-pine'
+      vim.cmd.colorscheme 'kanagawa-wave'
+      vim.cmd.hi 'Comment gui=none'
     end,
+    opts = {
+      colors = {
+        theme = {
+          all = {
+            ui = {
+              bg_gutter = 'none',
+            },
+          },
+        },
+      },
+    },
   },
+  -- {
+  --   'rose-pine/neovim',
+  --   name = 'rose-pine',
+  --   init = function()
+  --     -- vim.cmd.colorscheme 'rose-pine'
+  --   end,
+  -- },
   -- {
   --   'navarasu/onedark.nvim',
   --   lazy = false,
@@ -956,15 +964,15 @@ require('lazy').setup({
   --     vim.cmd.colorscheme 'onedark'
   --   end,
   -- },
-  {
-    'sainnhe/sonokai',
-    lazy = false,
-    priority = 1000,
-    init = function()
-      -- vim.g.sonokai_style = 'shusia'
-      -- vim.cmd.colorscheme 'sonokai'
-    end,
-  },
+  -- {
+  --   'sainnhe/sonokai',
+  --   lazy = false,
+  --   priority = 1000,
+  --   init = function()
+  --     vim.g.sonokai_style = 'shusia'
+  --     vim.cmd.colorscheme 'sonokai'
+  --   end,
+  -- },
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
@@ -1014,13 +1022,9 @@ require('lazy').setup({
       ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
       -- Autoinstall languages that are not installed
       auto_install = true,
-      highlight = { enable = true },
-      indent = { enable = true },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
-      require('nvim-treesitter.config').setup(opts)
 
       -- Register parsers for particular filetypes
       vim.treesitter.language.register('htmldjango', 'jinja')
@@ -1030,6 +1034,20 @@ require('lazy').setup({
       vim.cmd 'hi @function.method.php guifg=#D27E99'
       vim.cmd 'hi @constructor.php guifg=#FFA066'
       vim.cmd 'hi @keyword.function.php guifg=#76946A'
+
+      -- autocmd to enable neovim bultin stuff.
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = { '*' },
+        callback = function(args)
+          local ok, parser = pcall(vim.treesitter.get_parser, args.buf)
+          if ok and parser then
+            vim.treesitter.start(args.buf)
+            -- vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+            -- vim.wo[0][0].foldmethod = 'expr'
+            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
 
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
