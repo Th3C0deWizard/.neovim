@@ -17,10 +17,9 @@ return {
     -- this is equalent to setup({}) function
   },
   {
-    'norcalli/nvim-colorizer.lua',
-    init = function()
-      require('colorizer').setup()
-    end,
+    'catgoose/nvim-colorizer.lua',
+    event = 'BufReadPre',
+    opts = {},
   },
   { 'CRAG666/code_runner.nvim', config = true, opts = { filetype = { php = { 'php' } }, { go = { 'go run' } } } },
   {
@@ -50,6 +49,8 @@ return {
         jinja = { 'djlint' },
         ruby = { 'rubocop' },
         typescript = { 'biomejs' },
+        python = { 'ruff' },
+        go = { 'golangcilint' },
       }
       vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
         callback = function()
